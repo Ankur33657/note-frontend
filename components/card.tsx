@@ -16,6 +16,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CommentDialog from "./comments";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
@@ -47,7 +48,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
   const [applauses, setApplauses] = useState(applauseCount);
   const [showFullText, setShowFullText] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+  const [openComments, setOpenComments] = useState(false);
   const open = Boolean(anchorEl);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -80,6 +81,12 @@ const NoteCard: React.FC<NoteCardProps> = ({
 
   return (
     <>
+      {setOpenComments && (
+        <CommentDialog
+          open={openComments}
+          onClose={() => setOpenComments(false)}
+        />
+      )}
       <Card
         variant="outlined"
         sx={{
@@ -185,7 +192,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
             </Tooltip>
 
             <Tooltip title="Comment">
-              <IconButton size="small" onClick={toggleApplause}>
+              <IconButton size="small" onClick={() => setOpenComments(true)}>
                 <ChatBubbleRoundedIcon
                   fontSize="small"
                   color={applauses > applauseCount ? "primary" : "inherit"}

@@ -1,5 +1,7 @@
+"use client";
 import { ThemeContextProvider } from "../common/MuiThemeProvider";
 import Header from "../components/header";
+import AddNotes from "../components/addNotes";
 export default function RootLayout({
   children,
 }: {
@@ -11,6 +13,7 @@ export default function RootLayout({
         <ThemeContextProvider>
           <Header />
           {children}
+          <AddNotes />
         </ThemeContextProvider>
       </body>
     </html>
