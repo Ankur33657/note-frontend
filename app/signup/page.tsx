@@ -10,7 +10,7 @@ import {
   useTheme,
   Paper,
 } from "@mui/material";
-
+import { useRouter } from "next/navigation";
 export default function SignUp() {
   const [form, setForm] = useState({
     fullName: "",
@@ -19,6 +19,7 @@ export default function SignUp() {
     confirmPassword: "",
   });
   const theme = useTheme();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -105,6 +106,7 @@ export default function SignUp() {
           <Typography
             component="span"
             sx={{ color: theme.palette.primary.main, cursor: "pointer" }}
+            onClick={() => router.push("/login")}
           >
             Login
           </Typography>

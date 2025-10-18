@@ -94,7 +94,7 @@ const dummyNotes = [
     avatar: "/images/e.jpg",
     time: "3d ago",
     message:
-      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.",
+      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.hfhfhfh lorem400Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget aliquam aliquet, nunc nisl aliquet nisl, eget aliquam nisl nisl eget nisl. Sed euismod, nisl eget aliquam aliquet, nunc nisl aliquet nisl, eget aliquam nisl nisl eget nisl.",
     replies: 1,
     replyAvatars: ["/images/a.jpg"],
     applauseCount: 15,

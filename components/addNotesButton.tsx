@@ -1,16 +1,26 @@
+import { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
+import TaskDialog from "./addTask";
 const AddNotes = () => {
-  const handleAddClick = () => {
-    console.log("Add Note clicked!");
+  const [open, setOpen] = useState(false);
+  const handleSubmit = () => {
+    setOpen(false);
   };
 
   return (
     <>
+      {open && (
+        <TaskDialog
+          open={open}
+          onClose={() => setOpen(false)}
+          onSubmit={handleSubmit}
+        />
+      )}
       <Fab
         color="primary"
         aria-label="add"
-        onClick={handleAddClick}
+        onClick={() => setOpen(true)}
         sx={{
           position: "fixed",
           bottom: 24,

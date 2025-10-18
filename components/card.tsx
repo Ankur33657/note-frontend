@@ -14,13 +14,17 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  Button,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CommentDialog from "./comments";
+import { useRouter } from "next/navigation";
+import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import CommentDialog from "./commentsDialog";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
-
+import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 interface NoteCardProps {
   name: string;
   avatar: string;
@@ -50,7 +54,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openComments, setOpenComments] = useState(false);
   const open = Boolean(anchorEl);
-
+  const router = useRouter();
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -89,8 +93,10 @@ const NoteCard: React.FC<NoteCardProps> = ({
       )}
       <Card
         variant="outlined"
+        onClick={() => router.push(`/notes-details`)}
         sx={{
           borderRadius: 4,
+          cursor: "pointer",
           boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
           mb: 2,
           width: "100%",
@@ -113,6 +119,16 @@ const NoteCard: React.FC<NoteCardProps> = ({
               <Box>
                 <Typography variant="subtitle1" fontWeight={600}>
                   {name}
+                  <Button
+                    sx={{
+                      backgroundColor: "red",
+                      borderRadius: "20rem",
+                      marginX: "0.5rem",
+                      padding: "0.25rem",
+                    }}
+                  >
+                    Hard
+                  </Button>
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {time}
@@ -143,16 +159,21 @@ const NoteCard: React.FC<NoteCardProps> = ({
                 },
               }}
             >
-              <MenuItem onClick={handleEdit}>Edit</MenuItem>
-              <MenuItem
-                onClick={handleDelete}
-                sx={{ color: "error.main", fontWeight: 500 }}
-              >
+              <MenuItem onClick={handleEdit}>
+                <EditNoteRoundedIcon sx={{ mr: 1 }} />
+                Edit
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <DeleteRoundedIcon sx={{ mr: 1 }} />
                 Delete
+              </MenuItem>
+              <MenuItem onClick={handleEdit}>
+                <ShareRoundedIcon sx={{ mr: 1 }} />
+                Share
               </MenuItem>
             </Menu>
           </Box>
-
+          <Typography variant="h6">Heading</Typography>
           <Typography
             variant="body2"
             sx={{ mt: 2, mb: 2, color: "text.primary" }}

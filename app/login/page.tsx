@@ -10,10 +10,12 @@ import {
   useTheme,
   Paper,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const theme = useTheme();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -85,6 +87,7 @@ export default function Login() {
           <Typography
             component="span"
             sx={{ color: theme.palette.primary.main, cursor: "pointer" }}
+            onClick={() => router.push("/signup")}
           >
             SignUp
           </Typography>
