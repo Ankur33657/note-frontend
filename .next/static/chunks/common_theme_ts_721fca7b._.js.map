@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/ankur/Desktop/Notes/note-frontend/common/theme.ts"],"sourcesContent":["\"use client\";\n\nimport { createTheme } from \"@mui/material/styles\";\n\nconst theme = createTheme({\n  palette: {\n    primary: {\n      main: \"#1976D2\",\n    },\n    secondary: {\n      main: \"#9C27B0\",\n    },\n    background: {\n      default: \"#a4e3f5\",\n      paper: \"#FFFFFF\",\n    },\n  },\n  typography: {},\n});\n\nexport default theme;\n"],"names":[],"mappings":";;;;AAEA;AAFA;;AAIA,MAAM,QAAQ,IAAA,6NAAW,EAAC;IACxB,SAAS;QACP,SAAS;YACP,MAAM;QACR;QACA,WAAW;YACT,MAAM;QACR;QACA,YAAY;YACV,SAAS;YACT,OAAO;QACT;IACF;IACA,YAAY,CAAC;AACf;uCAEe","debugId":null}}]
-}
