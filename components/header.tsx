@@ -8,7 +8,7 @@ const Header = () => {
     <AppBar position="fixed" color="primary">
       <Toolbar>
         <Typography variant="h6" component="div">
-          My Next.js App
+          Welcome to NoteX
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />

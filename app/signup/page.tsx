@@ -11,8 +11,13 @@ import {
   Paper,
 } from "@mui/material";
 
-export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+export default function SignUp() {
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const theme = useTheme();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +65,15 @@ export default function Login() {
 
         <Box component="form" onSubmit={handleSubmit}>
           <TextField
+            name="fullName"
+            label="Full Name*"
+            type="text"
+            value={form.fullName}
+            onChange={handleChange}
+          />
+          <TextField
             name="email"
-            label="Email address"
+            label="Email address*"
             type="email"
             value={form.email}
             onChange={handleChange}
@@ -69,9 +81,17 @@ export default function Login() {
 
           <TextField
             name="password"
-            label="Password"
+            label="Password*"
             type="password"
             value={form.password}
+            onChange={handleChange}
+          />
+
+          <TextField
+            name="confirm Password"
+            label="Confirm Password*"
+            type="password"
+            value={form.confirmPassword}
             onChange={handleChange}
           />
 
@@ -81,12 +101,12 @@ export default function Login() {
         </Box>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
-          New to NoteX?{" "}
+          Already a member of NoteX?{" "}
           <Typography
             component="span"
             sx={{ color: theme.palette.primary.main, cursor: "pointer" }}
           >
-            SignUp
+            Login
           </Typography>
         </Typography>
       </Paper>
