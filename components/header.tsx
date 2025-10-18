@@ -1,6 +1,6 @@
 "use client";
 
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, Avatar } from "@mui/material";
 import ThemeToggle from "./toggleButton";
 
 const Header = () => {
@@ -12,8 +12,12 @@ const Header = () => {
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />
-
         <ThemeToggle />
+        <Avatar
+          src="/avatar.png"
+          alt="User Avatar"
+          style={{ marginLeft: "0.5rem", cursor: "pointer" }}
+        />
       </Toolbar>
     </AppBar>
   );

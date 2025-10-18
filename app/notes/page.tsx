@@ -67,9 +67,71 @@ const dummyNotes = [
     message:
       "Proposal for the new folder structure has been approved! Let's start implementing the changes in the next sprint cycle.",
     replies: 6,
-    replyAvatars: ["/images/c.jpg", "/images/d.jpg"],
+    replyAvatars: [
+      "/images/c.jpg",
+      "/images/d.jpg",
+      "/images/d.jpg",
+      "/images/d.jpg",
+      "/images/d.jpg",
+      "/images/d.jpg",
+    ],
     applauseCount: 4,
     likeCount: 1,
+  },
+  {
+    name: "Eve Adams",
+    avatar: "/images/e.jpg",
+    time: "3d ago",
+    message:
+      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.",
+    replies: 1,
+    replyAvatars: ["/images/a.jpg"],
+    applauseCount: 15,
+    likeCount: 9,
+  },
+  {
+    name: "Eve Adams",
+    avatar: "/images/e.jpg",
+    time: "3d ago",
+    message:
+      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.",
+    replies: 1,
+    replyAvatars: ["/images/a.jpg"],
+    applauseCount: 15,
+    likeCount: 9,
+  },
+  {
+    name: "Eve Adams",
+    avatar: "/images/e.jpg",
+    time: "3d ago",
+    message:
+      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.",
+    replies: 1,
+    replyAvatars: ["/images/a.jpg"],
+    applauseCount: 15,
+    likeCount: 9,
+  },
+  {
+    name: "Eve Adams",
+    avatar: "/images/e.jpg",
+    time: "3d ago",
+    message:
+      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.",
+    replies: 1,
+    replyAvatars: ["/images/a.jpg"],
+    applauseCount: 15,
+    likeCount: 9,
+  },
+  {
+    name: "Eve Adams",
+    avatar: "/images/e.jpg",
+    time: "3d ago",
+    message:
+      "We should consider migrating our legacy code sooner rather than later to avoid technical debt accumulation. It's a risk we need to address.",
+    replies: 1,
+    replyAvatars: ["/images/a.jpg"],
+    applauseCount: 15,
+    likeCount: 9,
   },
 ];
 
