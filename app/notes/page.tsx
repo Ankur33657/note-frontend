@@ -31,7 +31,7 @@ export function NoteCardContainer() {
   return (
     <Box sx={{ flexGrow: 1, p: 3, mt: "5rem" }}>
       <Typography variant="h4" gutterBottom>
-        Notes Feed
+        My Library
       </Typography>
       <Grid container spacing={3}>
         {dummyNotes.map((note, index) => (
@@ -39,6 +39,9 @@ export function NoteCardContainer() {
             <NoteCard notes={dummyNotes[index]} />
           </Grid>
         ))}
+        {dummyNotes.length === 0 && (
+          <Typography variant="h3">No notes found.</Typography>
+        )}
       </Grid>
     </Box>
   );

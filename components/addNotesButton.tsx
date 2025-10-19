@@ -4,7 +4,30 @@ import { Fab } from "@mui/material";
 import TaskDialog from "./addTask";
 const AddNotes = () => {
   const [open, setOpen] = useState(false);
-  const handleSubmit = () => {
+  const handleSubmit = async (data: any) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/notes/addnote`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            heading: data.heading,
+            description: data.content,
+            priority: data.priority,
+          }),
+          credentials: "include",
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error(`failed to AddTask: ${res.status} ${res.statusText}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
     setOpen(false);
   };
 

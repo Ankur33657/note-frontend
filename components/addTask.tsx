@@ -28,7 +28,6 @@ interface TaskDialogProps {
   }) => void;
 }
 
-// Animation for dialog entrance
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children: React.ReactElement },
   ref: React.Ref<unknown>,
@@ -223,12 +222,6 @@ const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSubmit }) => {
             borderRadius: 2,
             textTransform: "none",
             color: (theme) => theme.palette.text.secondary,
-            // borderColor: (theme) =>
-            //   theme.palette.mode === "light" ? "grey.300" : "grey.700",
-            // "&:hover": {
-            //   backgroundColor: (theme) =>
-            //     theme.palette.mode === "light" ? "grey.100" : "grey.800",
-            // },
           }}
         >
           Cancel
