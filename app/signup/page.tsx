@@ -11,6 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+
 export default function SignUp() {
   const [form, setForm] = useState({
     fullName: "",
@@ -25,9 +26,26 @@ export default function SignUp() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", form);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        },
+      );
+      if (!response.ok) {
+        throw new Error("User already exited");
+      }
+      router.push("/login");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -89,7 +107,7 @@ export default function SignUp() {
           />
 
           <TextField
-            name="confirm Password"
+            name="confirmPassword"
             label="Confirm Password*"
             type="password"
             value={form.confirmPassword}

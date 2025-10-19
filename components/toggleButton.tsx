@@ -6,7 +6,7 @@ import { ColorModeContext } from "../common/MuiThemeProvider";
 
 const ThemeToggle = () => {
   const theme = useTheme();
-  // Get the toggle function from the context
+
   const colorMode = React.useContext(ColorModeContext);
 
   return (
@@ -15,13 +15,9 @@ const ThemeToggle = () => {
       color="inherit"
       aria-label="toggle light/dark mode"
     >
-      {/* Display the sun icon if in dark mode, or the moon icon if in light mode */}
       {theme.palette.mode === "dark" ? <DarkModeOutlinedIcon /> : <SunnyIcon />}
     </IconButton>
   );
 };
 
 export default ThemeToggle;
-
-// NOTE: You must also install the icons package:
-// npm install @mui/icons-material

@@ -25,32 +25,8 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
-interface NoteCardProps {
-  name: string;
-  avatar: string;
-  time: string;
-  message: string;
-  replies: number;
-  replyAvatars: string[];
-  applauseCount?: number;
-  likeCount?: number;
-  onReply?: () => void;
-}
 
-const NoteCard: React.FC<NoteCardProps> = ({
-  name,
-  avatar,
-  time,
-  message,
-  replies,
-  replyAvatars,
-  applauseCount = 5,
-  likeCount = 7,
-  onReply,
-}) => {
-  const [likes, setLikes] = useState(likeCount);
-  const [applauses, setApplauses] = useState(applauseCount);
-  const [showFullText, setShowFullText] = useState(false);
+const NoteCard = ({ notes }: { notes: any }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openComments, setOpenComments] = useState(false);
   const open = Boolean(anchorEl);
@@ -72,16 +48,6 @@ const NoteCard: React.FC<NoteCardProps> = ({
     handleMenuClose();
     alert("Delete clicked");
   };
-
-  const toggleLike = () =>
-    setLikes((prev) => (prev === likeCount ? prev + 1 : likeCount));
-  const toggleApplause = () =>
-    setApplauses((prev) => (prev === applauseCount ? prev + 1 : applauseCount));
-
-  const truncatedMessage =
-    message.length > 120 && !showFullText
-      ? message.slice(0, 120) + "..."
-      : message;
 
   return (
     <>
@@ -115,10 +81,13 @@ const NoteCard: React.FC<NoteCardProps> = ({
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Avatar alt={name} src={avatar} sx={{ width: 40, height: 40 }} />
+              <Avatar
+                alt={notes?.createrName?.charAt(0) || "A"}
+                sx={{ width: 40, height: 40 }}
+              />
               <Box>
                 <Typography variant="subtitle1" fontWeight={600}>
-                  {name}
+                  {notes.createrName}
                   <Button
                     sx={{
                       backgroundColor: "red",
@@ -127,11 +96,11 @@ const NoteCard: React.FC<NoteCardProps> = ({
                       padding: "0.25rem",
                     }}
                   >
-                    Hard
+                    {notes.priority}
                   </Button>
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {time}
+                  {notes.createdAt}
                 </Typography>
               </Box>
             </Box>
@@ -173,26 +142,22 @@ const NoteCard: React.FC<NoteCardProps> = ({
               </MenuItem>
             </Menu>
           </Box>
-          <Typography variant="h6">Heading</Typography>
+          <Typography variant="h6">{notes?.heading}</Typography>
           <Typography
             variant="body2"
             sx={{ mt: 2, mb: 2, color: "text.primary" }}
           >
-            {truncatedMessage}
-            {message.length > 120 && (
-              <Typography
-                component="span"
-                sx={{
-                  color: "primary.main",
-                  cursor: "pointer",
-                  fontWeight: 500,
-                  ml: 0.5,
-                }}
-                onClick={() => setShowFullText((p) => !p)}
-              >
-                {showFullText ? "Show less" : "Read more"}
-              </Typography>
-            )}
+            <Typography
+              component="span"
+              sx={{
+                color: "primary.main",
+                cursor: "pointer",
+                fontWeight: 500,
+                ml: 0.5,
+              }}
+            >
+              {notes.description.slice(0, 100)}
+            </Typography>
           </Typography>
 
           <Divider sx={{ my: 1 }} />
@@ -204,56 +169,22 @@ const NoteCard: React.FC<NoteCardProps> = ({
             sx={{ mt: 1 }}
           >
             <Tooltip title="Like">
-              <IconButton size="small" onClick={toggleLike}>
-                <ThumbUpAltOutlinedIcon
-                  fontSize="small"
-                  color={likes > likeCount ? "primary" : "inherit"}
-                />
+              <IconButton size="small">
+                <ThumbUpAltOutlinedIcon fontSize="small" />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Comment">
               <IconButton size="small" onClick={() => setOpenComments(true)}>
-                <ChatBubbleRoundedIcon
-                  fontSize="small"
-                  color={applauses > applauseCount ? "primary" : "inherit"}
-                />
+                <ChatBubbleRoundedIcon fontSize="small" />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Save">
-              <IconButton size="small" onClick={toggleApplause}>
-                <FavoriteRoundedIcon
-                  fontSize="small"
-                  color={applauses > applauseCount ? "primary" : "inherit"}
-                />
+              <IconButton size="small">
+                <FavoriteRoundedIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-
-            <Typography variant="body2" color="text.secondary">
-              {applauses + likes}
-            </Typography>
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mt: 2 }}
-          >
-            <Stack direction="row" spacing={-0.8}>
-              {replyAvatars.slice(0, 3).map((src, index) => (
-                <Avatar
-                  key={index}
-                  src={src}
-                  sx={{
-                    width: 28,
-                    height: 28,
-                    border: "2px solid white",
-                  }}
-                />
-              ))}
-            </Stack>
           </Stack>
         </CardContent>
       </Card>

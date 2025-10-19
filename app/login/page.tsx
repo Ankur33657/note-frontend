@@ -21,9 +21,26 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", form);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: form.email, password: form.password }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        throw new Error(`Login failed: ${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
+      router.push("/notes");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
