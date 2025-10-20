@@ -25,10 +25,20 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
-
-const NoteCard = ({ notes }: { notes: any }) => {
+import ShareDialog from "./shareDialog";
+import TaskDialog from "./addTask";
+const NoteCard = ({
+  notes,
+  onAddComment,
+}: {
+  notes: any;
+  onAddComment: (val: boolean) => void;
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openComments, setOpenComments] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
+  const [editNote, setEditNote] = useState([]);
+  const [openEdit, setOpenEdit] = useState(false);
   const open = Boolean(anchorEl);
   const router = useRouter();
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -44,9 +54,25 @@ const NoteCard = ({ notes }: { notes: any }) => {
     alert("Edit clicked");
   };
 
-  const handleDelete = () => {
+  const handleDelete = async (noteId: string) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/notes/deletenote/${noteId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+      if (!res.ok) {
+        throw new Error("Failed to delete note");
+      }
+      if (res.status === 200) {
+        alert("Note deleted successfully");
+      }
+    } catch (err) {
+      console.error(err);
+    }
     handleMenuClose();
-    alert("Delete clicked");
   };
 
   return (
@@ -56,6 +82,22 @@ const NoteCard = ({ notes }: { notes: any }) => {
           open={openComments}
           onClose={() => setOpenComments(false)}
           notes={notes}
+          onAddComment={() => onAddComment(true)}
+        />
+      )}
+      {setOpenShare && (
+        <ShareDialog
+          open={openShare}
+          onClose={() => setOpenShare(false)}
+          noteId={notes._id}
+        />
+      )}
+      {setOpenEdit && (
+        <TaskDialog
+          open={openEdit}
+          onClose={() => setOpenEdit(false)}
+          edit={true}
+          note={editNote}
         />
       )}
       <Card
@@ -133,15 +175,26 @@ const NoteCard = ({ notes }: { notes: any }) => {
                 },
               }}
             >
-              <MenuItem onClick={handleEdit}>
+              <MenuItem
+                onClick={() => {
+                  setOpenEdit(true);
+                  setEditNote(notes);
+                  handleMenuClose();
+                }}
+              >
                 <EditNoteRoundedIcon sx={{ mr: 1 }} />
                 Edit
               </MenuItem>
-              <MenuItem onClick={handleDelete}>
+              <MenuItem onClick={() => handleDelete(notes._id.toString())}>
                 <DeleteRoundedIcon sx={{ mr: 1 }} />
                 Delete
               </MenuItem>
-              <MenuItem onClick={handleEdit}>
+              <MenuItem
+                onClick={() => {
+                  setOpenShare(true);
+                  handleMenuClose();
+                }}
+              >
                 <ShareRoundedIcon sx={{ mr: 1 }} />
                 Share
               </MenuItem>

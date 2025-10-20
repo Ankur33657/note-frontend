@@ -3,7 +3,13 @@
 import { Box, Button, TextField, Typography, Fade } from "@mui/material";
 import { useState } from "react";
 
-const AddComments = ({ noteId }: { noteId: any }) => {
+const AddComments = ({
+  noteId,
+  onAddComment,
+}: {
+  noteId: any;
+  onAddComment: (val: boolean) => void;
+}) => {
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState("");
 
@@ -35,6 +41,7 @@ const AddComments = ({ noteId }: { noteId: any }) => {
     }
     setNewComment("");
     setError("");
+    onAddComment(true);
   };
 
   return (

@@ -21,11 +21,13 @@ import { TransitionProps } from "@mui/material/transitions";
 interface TaskDialogProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: {
+  onSubmit?: (data: {
     heading: string;
     content: string;
     priority: string;
   }) => void;
+  edit?: boolean;
+  note?: any;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -41,10 +43,16 @@ const priorityColors = {
   hard: "error",
 } as const;
 
-const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSubmit }) => {
-  const [heading, setHeading] = useState("");
-  const [content, setContent] = useState("");
-  const [priority, setPriority] = useState("medium");
+const TaskDialog: React.FC<TaskDialogProps> = ({
+  open,
+  onClose,
+  onSubmit,
+  edit,
+  note,
+}) => {
+  const [heading, setHeading] = useState(note?.heading || "");
+  const [content, setContent] = useState(note?.description || "");
+  const [priority, setPriority] = useState(note?.priority || "medium");
   const [errors, setErrors] = useState({ heading: "", content: "" });
 
   const validate = () => {
@@ -64,10 +72,34 @@ const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSubmit }) => {
     return isValid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (note: any) => {
     if (!validate()) return;
+    if (onSubmit) onSubmit({ heading, content, priority });
+    if (edit) {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/notes/edit-note/${note?._id.toString()}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              heading: heading,
+              description: content,
+              priority: priority,
+            }),
+            credentials: "include",
+          },
+        );
+        if (!res.ok) {
+          throw new Error("Failed to edit note");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
-    onSubmit({ heading, content, priority });
     setHeading("");
     setContent("");
     setPriority("medium");
@@ -101,7 +133,7 @@ const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSubmit }) => {
         }}
       >
         <Typography variant="h6" fontWeight={600}>
-          Add Task
+          {edit ? "Edit Task" : "Add Task"}
         </Typography>
       </DialogTitle>
       <DialogContent dividers>
@@ -148,7 +180,6 @@ const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSubmit }) => {
                 setErrors((prev) => ({ ...prev, content: "" }));
               }}
               error={!!errors.content}
-              helperText={errors.content || `${content.length}/500 characters`}
               inputProps={{ maxLength: 500 }}
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -227,9 +258,9 @@ const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSubmit }) => {
           Cancel
         </Button>
         <Button
-          onClick={handleSubmit}
+          onClick={() => handleSubmit(note)}
           variant="contained"
-          disabled={!heading.trim() || !content.trim()}
+          disabled={!heading?.trim() || !content?.trim()}
           sx={{
             borderRadius: 2,
             textTransform: "none",

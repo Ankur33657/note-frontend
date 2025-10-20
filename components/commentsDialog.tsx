@@ -25,14 +25,18 @@ interface CommentDialogProps {
   open: boolean;
   onClose: () => void;
   notes: any;
+  onAddComment: (val: boolean) => void;
 }
 
 const CommentDialog: React.FC<CommentDialogProps> = ({
   open,
   onClose,
   notes,
+  onAddComment,
 }) => {
-  const [newComment, setNewComment] = useState("");
+  const handleAddedComment = () => {
+    onAddComment(true);
+  };
 
   return (
     <Dialog
@@ -66,12 +70,15 @@ const CommentDialog: React.FC<CommentDialogProps> = ({
 
       <Divider sx={{ my: 1 }} />
 
-      <AddComments noteId={notes._id.toString()} />
+      <AddComments
+        noteId={notes._id.toString()}
+        onAddComment={handleAddedComment}
+      />
 
       <Divider sx={{ my: 1 }} />
 
       <DialogContent dividers>
-        {notes.comments.map((comment: any) => (
+        {[...notes.comments].reverse().map((comment: any) => (
           <CommentCard comment={comment} />
         ))}
       </DialogContent>

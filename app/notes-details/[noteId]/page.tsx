@@ -25,16 +25,6 @@ export interface Comment {
   message: string;
 }
 
-const sampleNote: NoteDetails = {
-  id: 1,
-  creator: "Alice Smith",
-  createdAt: "2025-10-18 15:30",
-  heading: "Project Update",
-  difficulty: "medium",
-  message:
-    "We have completed the initial design phase and are now moving forward with development.",
-};
-
 const difficultyColors = {
   easy: "success",
   medium: "warning",
@@ -43,7 +33,9 @@ const difficultyColors = {
 
 export default function NoteDetailsPage() {
   const [comments, setComments] = useState<Comment[]>([]);
+  const [details, setDetails] = useState<any>([]);
   const [error, setError] = useState("");
+  const [commentAdd, setCommentAdd] = useState(false);
   const params = useParams();
   const noteId = Array.isArray(params.noteId)
     ? params.noteId[0]
@@ -70,15 +62,16 @@ export default function NoteDetailsPage() {
         }
         const data = await res.json();
         console.log("Response data:", data);
-        setComments(data?.note?.comments || []);
+        setComments(data?.note?.comments?.reverse() || []);
+        setDetails(data?.note);
       } catch (err) {
         console.error("Error fetching note:", err);
         setError("Failed to load comments");
       }
     };
     fetchNote();
-  }, [noteId]);
-
+  }, [noteId, commentAdd]);
+  console.log(details);
   if (error) {
     return (
       <Box sx={{ minHeight: "100vh", mt: "5rem", p: 4 }}>
@@ -86,6 +79,27 @@ export default function NoteDetailsPage() {
       </Box>
     );
   }
+  const handleAddedComment = () => {
+    setCommentAdd(true);
+  };
+
+  const getTimeDifference = (createdAt: string): string => {
+    const createdDate = new Date(createdAt);
+    const currentDate = new Date();
+    const diffMs = currentDate.getTime() - createdDate.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
+    if (diffHours < 1) {
+      const diffMinutes = Math.round(diffMs / (1000 * 60));
+      if (diffMinutes < 1) return "just Now";
+      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+    }
+    if (diffHours <= 24) {
+      return `${Math.floor(diffHours)} hours ago`;
+    } else {
+      const diffDays = Math.floor(diffHours / 24);
+      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    }
+  };
 
   return (
     <Box
@@ -110,31 +124,30 @@ export default function NoteDetailsPage() {
           }}
         >
           <Typography variant="h5" fontWeight={600} gutterBottom>
-            {sampleNote.heading}
+            {details?.heading}
             <Button
               sx={{
-                backgroundColor: difficultyColors[sampleNote.difficulty],
+                backgroundColor: "red",
                 borderRadius: "20rem",
                 marginX: "0.5rem",
                 padding: "0.25rem",
                 color: "white",
               }}
             >
-              {sampleNote.difficulty.charAt(0).toUpperCase() +
-                sampleNote.difficulty.slice(1)}
+              {details?.priority?.toUpperCase()}
             </Button>
           </Typography>
           <Stack spacing={2}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <PersonIcon color="primary" />
               <Typography variant="subtitle1" fontWeight={500}>
-                {sampleNote.creator}
+                {details?.createrName}
               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
               <AccessTimeIcon color="action" />
               <Typography variant="body2" color="text.secondary">
-                {sampleNote.createdAt}
+                {getTimeDifference(details?.createdAt)}
               </Typography>
             </Stack>
             <Box>
@@ -142,23 +155,23 @@ export default function NoteDetailsPage() {
                 Description
               </Typography>
               <Typography variant="body1" sx={{ mt: 0.5, lineHeight: 1.6 }}>
-                {sampleNote.message}
+                {details?.description}
               </Typography>
             </Box>
           </Stack>
         </Box>
 
-        <AddComments noteId={noteId} />
+        <AddComments noteId={noteId} onAddComment={handleAddedComment} />
         <Typography variant="h6" fontWeight={600} mt="1rem" gutterBottom>
           Comments
         </Typography>
         <Stack spacing={2} sx={{ mb: 4 }}>
-          {comments.length === 0 ? (
+          {comments?.length === 0 ? (
             <Typography variant="body2" color="text.secondary">
               No comments yet. Be the first to comment!
             </Typography>
           ) : (
-            comments.map((comment: Comment) => (
+            comments?.map((comment: Comment) => (
               <CommentCard comment={comment} key={comment.id} />
             ))
           )}
