@@ -235,12 +235,6 @@ const NoteCard = ({
             alignItems="center"
             sx={{ mt: 1 }}
           >
-            <Tooltip title="Like">
-              <IconButton size="small">
-                <ThumbUpAltOutlinedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-
             <Tooltip title="Comment">
               <IconButton size="small" onClick={() => setOpenComments(true)}>
                 <ChatBubbleRoundedIcon fontSize="small" />

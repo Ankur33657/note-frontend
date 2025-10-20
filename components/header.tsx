@@ -131,18 +131,6 @@ const Header = () => {
             Feed
           </MenuItem>
 
-          <MenuItem
-            onClick={() => {
-              router.push("/saved");
-              handleClose();
-            }}
-          >
-            <ListItemIcon>
-              <CreditCardIcon fontSize="small" />
-            </ListItemIcon>
-            Card Notes
-          </MenuItem>
-
           <Divider />
 
           <MenuItem
