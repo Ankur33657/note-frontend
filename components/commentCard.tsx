@@ -41,7 +41,6 @@ const CommentCard = ({ comment }: { comment: any }) => {
               {comment.message}
             </Typography>
 
-            {/* Like / Dislike */}
             <Stack
               direction="row"
               spacing={2}
@@ -51,12 +50,12 @@ const CommentCard = ({ comment }: { comment: any }) => {
               <IconButton size="small" color="primary">
                 <ThumbUpAltOutlinedIcon fontSize="small" />
               </IconButton>
-              <Typography variant="body2">{comment.likes}</Typography>
+              {/*<Typography variant="body2">{comment.likes}</Typography>*/}
 
               <IconButton size="small" color="error">
                 <ThumbDownAltOutlinedIcon fontSize="small" />
               </IconButton>
-              <Typography variant="body2">{comment.dislikes}</Typography>
+              {/*<Typography variant="body2">{comment.dislikes}</Typography>*/}
             </Stack>
           </Box>
         </Stack>

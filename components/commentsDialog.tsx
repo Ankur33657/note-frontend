@@ -20,94 +20,19 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import CommentCard from "./commentCard";
-interface Comment {
-  id: number;
-  name: string;
-  avatar: string;
-  time: string;
-  message: string;
-  likes: number;
-  dislikes: number;
-}
 
 interface CommentDialogProps {
   open: boolean;
   onClose: () => void;
+  notes: any;
 }
 
-const CommentDialog: React.FC<CommentDialogProps> = ({ open, onClose }) => {
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: 1,
-      name: "John Doe",
-      avatar: "/avatar1.png",
-      time: "2h ago",
-      message:
-        "This is really insightful. I liked how you explained the concept!",
-      likes: 10,
-      dislikes: 1,
-    },
-    {
-      id: 2,
-      name: "Emily Carter",
-      avatar: "/avatar2.png",
-      time: "3h ago",
-      message:
-        "Nice work! But I think there could be a few improvements in formatting.",
-      likes: 8,
-      dislikes: 0,
-    },
-    {
-      id: 2,
-      name: "Emily Carter",
-      avatar: "/avatar2.png",
-      time: "3h ago",
-      message:
-        "Nice work! But I think there could be a few improvements in formatting.",
-      likes: 8,
-      dislikes: 0,
-    },
-    {
-      id: 2,
-      name: "Emily Carter",
-      avatar: "/avatar2.png",
-      time: "3h ago",
-      message:
-        "Nice work! But I think there could be a few improvements in formatting.",
-      likes: 8,
-      dislikes: 0,
-    },
-    {
-      id: 2,
-      name: "Emily Carter",
-      avatar: "/avatar2.png",
-      time: "3h ago",
-      message:
-        "Nice work! But I think there could be a few improvements in formatting.",
-      likes: 8,
-      dislikes: 0,
-    },
-  ]);
-
+const CommentDialog: React.FC<CommentDialogProps> = ({
+  open,
+  onClose,
+  notes,
+}) => {
   const [newComment, setNewComment] = useState("");
-
-  const handleLike = (id: number) => {
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === id ? { ...comment, likes: comment.likes + 1 } : comment,
-      ),
-    );
-  };
-
-  const handleDislike = (id: number) => {
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === id
-          ? { ...comment, dislikes: comment.dislikes + 1 }
-          : comment,
-      ),
-    );
-  };
 
   return (
     <Dialog
@@ -123,7 +48,6 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ open, onClose }) => {
         },
       }}
     >
-      {/* Header */}
       <DialogTitle
         sx={{
           display: "flex",
@@ -142,12 +66,12 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ open, onClose }) => {
 
       <Divider sx={{ my: 1 }} />
 
-      <AddComments />
+      <AddComments noteId={notes._id.toString()} />
 
       <Divider sx={{ my: 1 }} />
 
       <DialogContent dividers>
-        {comments.map((comment) => (
+        {notes.comments.map((comment: any) => (
           <CommentCard comment={comment} />
         ))}
       </DialogContent>

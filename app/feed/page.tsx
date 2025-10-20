@@ -35,7 +35,7 @@ export function NoteCardContainer() {
         {dummyNotes &&
           dummyNotes.map((note: any, index: number) => (
             <Grid key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}>
-              <NoteCard notes={dummyNotes[index]} />
+              <NoteCard notes={note} />
             </Grid>
           ))}
         {dummyNotes.length === 0 && (

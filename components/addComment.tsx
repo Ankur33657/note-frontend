@@ -3,16 +3,36 @@
 import { Box, Button, TextField, Typography, Fade } from "@mui/material";
 import { useState } from "react";
 
-const AddComments = ({}: {}) => {
+const AddComments = ({ noteId }: { noteId: any }) => {
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState("");
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (!newComment.trim()) {
       setError("Comment cannot be empty");
       return;
     }
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/notes/addComment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ noteId: noteId, message: newComment }),
+          credentials: "include",
+        },
+      );
 
+      if (!res.ok) {
+        throw new Error(
+          `failed to add comment: ${res.status} ${res.statusText}`,
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
     setNewComment("");
     setError("");
   };

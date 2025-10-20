@@ -36,7 +36,7 @@ export function NoteCardContainer() {
       <Grid container spacing={3}>
         {dummyNotes.map((note, index) => (
           <Grid key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}>
-            <NoteCard notes={dummyNotes[index]} />
+            <NoteCard notes={note} />
           </Grid>
         ))}
         {dummyNotes.length === 0 && (

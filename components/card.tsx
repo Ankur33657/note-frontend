@@ -55,14 +55,13 @@ const NoteCard = ({ notes }: { notes: any }) => {
         <CommentDialog
           open={openComments}
           onClose={() => setOpenComments(false)}
+          notes={notes}
         />
       )}
       <Card
         variant="outlined"
-        onClick={() => router.push(`/notes-details`)}
         sx={{
           borderRadius: 4,
-          cursor: "pointer",
           boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
           mb: 2,
           width: "100%",
@@ -104,7 +103,13 @@ const NoteCard = ({ notes }: { notes: any }) => {
                 </Typography>
               </Box>
             </Box>
-            <IconButton size="small" onClick={handleMenuOpen}>
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.preventDefault();
+                handleMenuOpen(e);
+              }}
+            >
               <MoreVertIcon />
             </IconButton>
 
@@ -139,6 +144,15 @@ const NoteCard = ({ notes }: { notes: any }) => {
               <MenuItem onClick={handleEdit}>
                 <ShareRoundedIcon sx={{ mr: 1 }} />
                 Share
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/notes-details/${notes._id.toString()}`);
+                }}
+              >
+                <EditNoteRoundedIcon sx={{ mr: 1 }} />
+                Details
               </MenuItem>
             </Menu>
           </Box>
