@@ -17,16 +17,18 @@ import {
   Button,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CommentDialog from "./commentsDialog";
+import utils from "../common/utils";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import ShareDialog from "./shareDialog";
 import TaskDialog from "./addTask";
+import { toast } from "react-toastify";
 const NoteCard = ({
   notes,
   onAddComment,
@@ -41,17 +43,14 @@ const NoteCard = ({
   const [openEdit, setOpenEdit] = useState(false);
   const open = Boolean(anchorEl);
   const router = useRouter();
+  const currentPath = usePathname();
+  const isEditDisabled = currentPath === "/feed";
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleEdit = () => {
-    handleMenuClose();
-    alert("Edit clicked");
   };
 
   const handleDelete = async (noteId: string) => {
@@ -67,7 +66,7 @@ const NoteCard = ({
         throw new Error("Failed to delete note");
       }
       if (res.status === 200) {
-        alert("Note deleted successfully");
+        toast.warning("Note deleted successfully");
       }
     } catch (err) {
       console.error(err);
@@ -103,6 +102,7 @@ const NoteCard = ({
       <Card
         variant="outlined"
         sx={{
+          cursor: "pointer",
           borderRadius: 4,
           boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
           mb: 2,
@@ -131,23 +131,29 @@ const NoteCard = ({
                   {notes.createrName}
                   <Button
                     sx={{
-                      backgroundColor: "red",
+                      backgroundColor:
+                        notes?.priority === "hard"
+                          ? "#FF5733"
+                          : notes?.priority === "medium"
+                            ? "#FFC107"
+                            : "#4CAF50",
                       borderRadius: "20rem",
                       marginX: "0.5rem",
                       padding: "0.25rem",
                     }}
                   >
-                    {notes.priority}
+                    {notes.priority.toUpperCase()}
                   </Button>
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {notes.createdAt}
+                  {utils.getTimeDifference(notes.createdAt)}
                 </Typography>
               </Box>
             </Box>
             <IconButton
               size="small"
               onClick={(e) => {
+                e.stopPropagation();
                 e.preventDefault();
                 handleMenuOpen(e);
               }}
@@ -176,6 +182,7 @@ const NoteCard = ({
               }}
             >
               <MenuItem
+                disabled={isEditDisabled}
                 onClick={() => {
                   setOpenEdit(true);
                   setEditNote(notes);
@@ -185,11 +192,15 @@ const NoteCard = ({
                 <EditNoteRoundedIcon sx={{ mr: 1 }} />
                 Edit
               </MenuItem>
-              <MenuItem onClick={() => handleDelete(notes._id.toString())}>
+              <MenuItem
+                disabled={isEditDisabled}
+                onClick={() => handleDelete(notes._id.toString())}
+              >
                 <DeleteRoundedIcon sx={{ mr: 1 }} />
                 Delete
               </MenuItem>
               <MenuItem
+                disabled={isEditDisabled}
                 onClick={() => {
                   setOpenShare(true);
                   handleMenuClose();

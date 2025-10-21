@@ -11,7 +11,6 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 
 const CommentCard = ({ comment }: { comment: any }) => {
-  console.log(comment);
   return (
     <>
       <Paper

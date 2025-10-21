@@ -9,6 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { toast } from "react-toastify";
 
 interface PublicConfirmDialogProps {
   open: boolean;
@@ -37,6 +38,7 @@ const PublicConfirmDialog: React.FC<PublicConfirmDialogProps> = ({
       if (!res.ok) {
         throw new Error("Failed to make note public");
       }
+      toast.success("Note made public successfully");
     } catch (err) {
       console.error(err);
     }

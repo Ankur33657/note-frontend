@@ -1,8 +1,14 @@
 import { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import { toast } from "react-toastify";
 import { Fab } from "@mui/material";
 import TaskDialog from "./addTask";
-const AddNotes = () => {
+import { on } from "node:stream";
+const AddNotes = ({
+  onNoteAdded,
+}: {
+  onNoteAdded?: (val: boolean) => void;
+}) => {
   const [open, setOpen] = useState(false);
   const handleSubmit = async (data: any) => {
     try {
@@ -23,8 +29,11 @@ const AddNotes = () => {
       );
 
       if (!res.ok) {
+        toast.error(`failed to AddTask:`);
         throw new Error(`failed to AddTask: ${res.status} ${res.statusText}`);
       }
+      toast.success("Task added successfully");
+      if (onNoteAdded) onNoteAdded(true);
     } catch (error) {
       console.error(error);
     }

@@ -7,7 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import AddComments from "../../../components/addComment";
 import CommentCard from "../../../components/commentCard";
 import { useParams } from "next/navigation";
-
+import utils from "../../../common/utils";
 export interface NoteDetails {
   id: number;
   creator: string;
@@ -56,12 +56,12 @@ export default function NoteDetailsPage() {
             credentials: "include",
           },
         );
-        console.log("Response status:", res.status);
+
         if (!res.ok) {
           throw new Error(`Failed to fetch note: ${res.statusText}`);
         }
         const data = await res.json();
-        console.log("Response data:", data);
+
         setComments(data?.note?.comments?.reverse() || []);
         setDetails(data?.note);
       } catch (err) {
@@ -71,7 +71,7 @@ export default function NoteDetailsPage() {
     };
     fetchNote();
   }, [noteId, commentAdd]);
-  console.log(details);
+
   if (error) {
     return (
       <Box sx={{ minHeight: "100vh", mt: "5rem", p: 4 }}>
@@ -81,24 +81,6 @@ export default function NoteDetailsPage() {
   }
   const handleAddedComment = () => {
     setCommentAdd(true);
-  };
-
-  const getTimeDifference = (createdAt: string): string => {
-    const createdDate = new Date(createdAt);
-    const currentDate = new Date();
-    const diffMs = currentDate.getTime() - createdDate.getTime();
-    const diffHours = diffMs / (1000 * 60 * 60);
-    if (diffHours < 1) {
-      const diffMinutes = Math.round(diffMs / (1000 * 60));
-      if (diffMinutes < 1) return "just Now";
-      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-    }
-    if (diffHours <= 24) {
-      return `${Math.floor(diffHours)} hours ago`;
-    } else {
-      const diffDays = Math.floor(diffHours / 24);
-      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-    }
   };
 
   return (
@@ -127,7 +109,12 @@ export default function NoteDetailsPage() {
             {details?.heading}
             <Button
               sx={{
-                backgroundColor: "red",
+                backgroundColor:
+                  details?.priority === "hard"
+                    ? "#FF5733"
+                    : details?.priority === "medium"
+                      ? "#FFC107"
+                      : "#4CAF50",
                 borderRadius: "20rem",
                 marginX: "0.5rem",
                 padding: "0.25rem",
@@ -147,7 +134,7 @@ export default function NoteDetailsPage() {
             <Stack direction="row" alignItems="center" spacing={1}>
               <AccessTimeIcon color="action" />
               <Typography variant="body2" color="text.secondary">
-                {getTimeDifference(details?.createdAt)}
+                {utils.getTimeDifference(details?.createdAt)}
               </Typography>
             </Stack>
             <Box>

@@ -20,7 +20,7 @@ import FeedIcon from "@mui/icons-material/DynamicFeed";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import Avtar from "../public/avtar.jpeg";
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -69,7 +69,7 @@ const Header = () => {
         <ThemeToggle />
         {!isAuthPath && (
           <Avatar
-            src="/avatar.png"
+            src={Avtar.src}
             alt="User Avatar"
             onClick={handleAvatarClick}
             sx={{

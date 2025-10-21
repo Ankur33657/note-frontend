@@ -19,7 +19,6 @@ const NoteCardContainer = () => {
           },
         );
         const json = await res.json();
-        console.log(res);
 
         if (!res.ok) {
           throw new Error("ERROR:");
@@ -43,9 +42,6 @@ const NoteCardContainer = () => {
             <NoteCard notes={note} onAddComment={() => setCommentAdd(true)} />
           </Grid>
         ))}
-        {dummyNotes.length === 0 && (
-          <Typography variant="h3">No notes found.</Typography>
-        )}
       </Grid>
     </Box>
   );
