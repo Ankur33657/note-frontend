@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -55,6 +55,11 @@ const TaskDialog: React.FC<TaskDialogProps> = ({
   const [priority, setPriority] = useState(note?.priority || "medium");
   const [errors, setErrors] = useState({ heading: "", content: "" });
 
+  useEffect(() => {
+    setHeading(note?.heading || "");
+    setContent(note?.description || "");
+    setPriority(note?.priority || "medium");
+  }, [edit, note]);
   const validate = () => {
     const newErrors = { heading: "", content: "" };
     let isValid = true;
