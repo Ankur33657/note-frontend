@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import NoteCard from "../../components/card";
 import { useState, useEffect } from "react";
 
-export function NoteCardContainer() {
+const NoteCardContainer = () => {
   const [dummyNotes, setDummyNotes] = useState([]);
   const [commentAdd, setCommentAdd] = useState(false);
   useEffect(() => {
@@ -49,6 +49,6 @@ export function NoteCardContainer() {
       </Grid>
     </Box>
   );
-}
+};
 
 export default NoteCardContainer;
