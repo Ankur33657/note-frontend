@@ -3,13 +3,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 import { Fab } from "@mui/material";
 import TaskDialog from "./addTask";
-import { on } from "node:stream";
+import CreateSocketConnection from "@/common/socket";
+
 const AddNotes = ({
   onNoteAdded,
 }: {
   onNoteAdded?: (val: boolean) => void;
 }) => {
   const [open, setOpen] = useState(false);
+
   const handleSubmit = async (data: any) => {
     try {
       const res = await fetch(
@@ -29,10 +31,25 @@ const AddNotes = ({
       );
 
       if (!res.ok) {
-        toast.error(`failed to AddTask:`);
-        throw new Error(`failed to AddTask: ${res.status} ${res.statusText}`);
+        toast.error(`Failed to add task`);
+        throw new Error(`Failed to add task: ${res.status} ${res.statusText}`);
       }
+
+      const responseData = await res.json();
       toast.success("Task added successfully");
+
+      const socket = CreateSocketConnection();
+
+      socket.on("connect", () => {
+        console.log("🔌 Socket connected, emitting taskAdded...");
+
+        socket.emit("taskAdded", { data: responseData });
+      });
+
+      setTimeout(() => {
+        socket.disconnect();
+      }, 500);
+
       if (onNoteAdded) onNoteAdded(true);
     } catch (error) {
       console.error(error);
@@ -70,4 +87,5 @@ const AddNotes = ({
     </>
   );
 };
+
 export default AddNotes;

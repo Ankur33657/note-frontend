@@ -68,6 +68,7 @@ const NoteCard = ({
       if (res.status === 200) {
         toast.warning("Note deleted successfully");
       }
+      onAddComment(true);
     } catch (err) {
       console.error(err);
     }

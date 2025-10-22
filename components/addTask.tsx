@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import CreateSocketConnection from "@/common/socket";
 import {
   Dialog,
   DialogTitle,
@@ -54,7 +55,7 @@ const TaskDialog: React.FC<TaskDialogProps> = ({
   const [content, setContent] = useState(note?.description || "");
   const [priority, setPriority] = useState(note?.priority || "medium");
   const [errors, setErrors] = useState({ heading: "", content: "" });
-
+  const [socket, setSocket] = useState<any>();
   useEffect(() => {
     setHeading(note?.heading || "");
     setContent(note?.description || "");
@@ -77,32 +78,39 @@ const TaskDialog: React.FC<TaskDialogProps> = ({
     return isValid;
   };
 
-  const handleSubmit = async (note: any) => {
+  useEffect(() => {
+    if (note?._id) {
+      const newSocket = CreateSocketConnection();
+      setSocket(newSocket);
+
+      newSocket.emit("joinRoom", { noteId: note._id.toString() });
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  }, [note?._id]);
+  const handleSubmit = (note: any) => {
     if (!validate()) return;
     if (onSubmit) onSubmit({ heading, content, priority });
-    if (edit) {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/notes/edit-note/${note?._id.toString()}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              heading: heading,
-              description: content,
-              priority: priority,
-            }),
-            credentials: "include",
-          },
-        );
-        if (!res.ok) {
-          throw new Error("Failed to edit note");
-        }
-      } catch (err) {
-        console.error(err);
-      }
+
+    if (edit && socket) {
+      socket.emit(
+        "editNote",
+        {
+          noteId: note._id,
+          heading: heading,
+          description: content,
+          priority: priority,
+        },
+        (response: { success: boolean; error?: string }) => {
+          if (!response.success) {
+            console.error("Note edit failed on server:", response.error);
+          } else {
+            console.log("Note edit successfully saved and broadcasted.");
+          }
+        },
+      );
     }
 
     setHeading("");
